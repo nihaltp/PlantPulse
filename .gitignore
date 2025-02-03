@@ -1,0 +1,12 @@
+.env
+
+/.vscode
+/.mypy_cache
+
+/test
+/config
+/species
+/movements
+/captured_images
+
+/myenv
