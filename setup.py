@@ -7,35 +7,17 @@ class Setup:
         self.welcome()
         
         self.config_file = "config.json"
+        self.default_file = "default_pins.json"
         
         # List of GPIO pins
         self.GPIO_PINS : list[int] = [3, 5, 7, 8, 10, 11, 12, 13, 15, 16, 18, 19, 21, 22, 23, 24, 26, 27, 28, 29, 31, 32, 33, 35, 36, 37, 38, 40]
         # TODO: Take the default pins from another file
-        self.PINS_DEFAULT : dict[str, dict[str, int]] = {
-            "L298N": {
-                "ENA" : 36,
-                "IN1" : 11,
-                "IN2" : 12,
-                "IN3" : 35,
-                "IN4" : 38,
-                "ENB" : 40
-            },
-            "SENSOR_MOVEMENT": {
-                "ENA" : 26,
-                "IN1" : 24,
-                "IN2" : 21
-            },
-            "WATER_PUMP": {
-                "ENA" : 22,
-                "IN1" : 37,
-                "IN2" : 13
-            }
-        }
+        self.PINS_DEFAULT : dict[str, dict[str, int]] = self.load_pins(self.default_file)
         
         # List of available GPIO pins
         self.avalilable_pins : list[int] = self.GPIO_PINS
         self.PINS_USING : list[int] = []
-        self.pins : dict[str, dict[str, int]] = self.load_pins()
+        self.pins : dict[str, dict[str, int]] = self.load_pins(self.config_file)
         self.compare_pins()
         self.check_pins()
     
@@ -46,10 +28,10 @@ class Setup:
         print("\033[0m")
     
     # MARK: Load pins
-    def load_pins(self) -> dict[str, dict[str, int]]:
+    def load_pins(self, file) -> dict[str, dict[str, int]]:
         """Load already selected pins from config.json."""
         try:
-            with open(self.config_file, "r") as f:
+            with open(file, "r") as f:
                 config = json.load(f)
                 f.close()
             return config
