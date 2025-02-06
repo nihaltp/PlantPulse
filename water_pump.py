@@ -9,11 +9,18 @@
 
 import RPi.GPIO as GPIO
 import time
+import json
 
-# Define GPIO pins
-IN1: int = 22 # TODO: Change Pin
-IN2: int = 37 # TODO: Change Pin
-ENA: int = 13 # TODO: Change Pin
+# MARK: Load pins
+"""Load already selected pins from config.json."""
+with open("config.json", "r") as f:
+    config = json.load(f)
+    f.close()
+
+# Define GPIO pins for L298N Motor Driver
+IN1 = config["WATER_PUMP"]["IN1"]
+IN2 = config["WATER_PUMP"]["IN2"]
+ENA = config["WATER_PUMP"]["ENA"]
 
 # Setup GPIO mode
 GPIO.setmode(GPIO.BOARD)
@@ -24,6 +31,7 @@ GPIO.setup(ENA, GPIO.OUT)
 # Initialize PWM on ENA pin
 pwm = GPIO.PWM(ENA, 1000)
 
+# MARK: Functions
 def turn_on_pump(PWM : int):
     pwm.start(PWM)
     GPIO.output(IN1, GPIO.HIGH)

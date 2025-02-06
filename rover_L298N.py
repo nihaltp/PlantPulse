@@ -9,16 +9,23 @@
 """
 
 import csv
+import json
 import RPi.GPIO as GPIO
 from time import sleep
 
+# MARK: Load pins
+"""Load already selected pins from config.json."""
+with open("config.json", "r") as f:
+    config = json.load(f)
+    f.close()
+
 # Motor driver pins
-IN1: int = 36 # TODO: Change pin
-IN2: int = 11 # TODO: Change pin
-ENA: int = 12 # TODO: Change pin
-IN3: int = 35 # TODO: Change pin
-IN4: int = 38 # TODO: Change pin
-ENB: int = 40 # TODO: Change pin
+IN1 = config["L298N"]["IN1"]
+IN2 = config["L298N"]["IN2"]
+ENA = config["L298N"]["ENA"]
+IN3 = config["L298N"]["IN3"]
+IN4 = config["L298N"]["IN4"]
+ENB = config["L298N"]["ENB"]
 
 # Setup GPIO mode and pins
 GPIO.setmode(GPIO.BOARD)

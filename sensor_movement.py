@@ -8,18 +8,25 @@
 
 import RPi.GPIO as GPIO
 from time import sleep
+import json
+
+# MARK: Load pins
+"""Load already selected pins from config.json."""
+with open("config.json", "r") as f:
+    config = json.load(f)
+    f.close()
 
 # Define GPIO pins for L298N Motor Driver
-IN1: int = 26 # TODO: Change pin
-IN2: int = 24 # TODO: Change pin
-ENA: int = 21 # TODO: Change pin
+IN1 = config["SENSOR_MOVEMENT"]["IN1"]
+IN2 = config["SENSOR_MOVEMENT"]["IN2"]
+ENA = config["SENSOR_MOVEMENT"]["ENA"]
 
 # Define movement parameters
 sensor_movement: int = 2  # TODO: Change value
 movement_speed: int = 100 # TODO: Change value
 
 # Setup GPIO mode
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 GPIO.setup(IN1, GPIO.OUT)
 GPIO.setup(IN2, GPIO.OUT)
 GPIO.setup(ENA, GPIO.OUT)
